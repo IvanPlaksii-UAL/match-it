@@ -81,8 +81,8 @@ public class GameManager : MonoBehaviour
 
     void UserInterface()
     {
-        counter.text = "" + collected;
-        if(timeLeft >= 0)timer.text = "" + timeLeft;
+        counter.text = ($"{collected}");
+        if(timeLeft >= 0) timer.text = ($"{timeLeft}");
         frameCount++;
         if (frameCount == 60)
         {
