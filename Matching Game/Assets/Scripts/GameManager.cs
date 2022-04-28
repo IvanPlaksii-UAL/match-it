@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 2;
         currentState = "Reset";
     }
 
@@ -125,7 +126,7 @@ public class GameManager : MonoBehaviour
             ObjectSpawn(5, Purple, "Purple", Circle,  new Color(0.4f, 0.15f, 0.6f));
             
             //Spawn Rate
-            if (timeLeft > 0) spawnCD = cooldown - (collected * 3);
+            if (timeLeft > 0) spawnCD = cooldown - (collected * 4);
         }
     }
     public void PointCheck(GameObject _colour, bool _addPoint = false, GameObject _other = null)

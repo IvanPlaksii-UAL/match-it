@@ -7,6 +7,7 @@ public class MenuManager : MonoBehaviour
 {
     GameManager reftoManager;
     public GameObject PlayButton, HowToPlay, Easy, Medium, Hard, Mouse, Back;
+    public TextMesh controlsText;
     string MenuState; //Set, Difficulty, Controls
     //public string DifficultySet;// Easy, Normal, Hard;
     // Start is called before the first frame update
@@ -93,12 +94,23 @@ public class MenuManager : MonoBehaviour
                 MenuState = "Set";
             }
         }
+        else if (MenuState == "Controls")
+        {
+            Back.transform.position = new Vector3(-7.5f, 4, 0);
+            controlsText.transform.position = new Vector3(0, 0, 0);
+
+            if (Mouse.GetComponent<SpriteRenderer>().bounds.Intersects(Back.GetComponent<SpriteRenderer>().bounds) && Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                MenuState = "Set";
+            }
+        }
         else
         {
             Easy.transform.position = new Vector3(15, 1.75f, 0);
             Medium.transform.position = new Vector3(15, 1.75f, 0);
             Hard.transform.position = new Vector3(15, 1.75f, 0);
             Back.transform.position = new Vector3(15f, 4, 0);
+            controlsText.transform.position = new Vector3(-20, 0, 0);
         }
         
     }
