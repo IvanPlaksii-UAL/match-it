@@ -14,6 +14,7 @@ public class MenuManager : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 2;
         MenuState = "Set";
         reftoManager = FindObjectOfType<GameManager>();
         titleColor = 10;
