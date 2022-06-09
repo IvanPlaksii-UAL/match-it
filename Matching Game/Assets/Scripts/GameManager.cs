@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     private int cooldown;
     public string currentPos; //Square, Triangle, Hexagon, Diamond, Circle
     public string currentState; //Menu, Reset, Playable, GameOver
-    public TextMesh timer, counter, best;
+    public TextMesh timer, counter, best, statusText;
     private GameObject Green, Red, Blue, Yellow, Purple;
     public Sprite Square, Triangle, Hexagon, Diamond, Circle;
     public GameObject GreenButton, RedButton, BlueButton, YellowButton, PurpleButton, playButton, menuButton, Mouse, Overlay;
@@ -82,8 +82,10 @@ public class GameManager : MonoBehaviour
 
     void UserInterface()
     {
-        counter.text = ($"{collected}");
-        if(timeLeft >= 0) timer.text = ($"{timeLeft}");
+        if (STATS.DIFFICULTY == "Easy")counter.text = ($"{collected}/12");
+        if (STATS.DIFFICULTY == "Normal") counter.text = ($"{collected}/15");
+        if (STATS.DIFFICULTY == "Hard") counter.text = ($"{collected}/16");
+        if (timeLeft >= 0) timer.text = ($"{timeLeft}");
         frameCount++;
         if (frameCount == 60)
         {
@@ -93,8 +95,8 @@ public class GameManager : MonoBehaviour
     }
     void EndScreen()
     {
-        playButton.transform.position = new Vector3(0, 1, 0);
-        menuButton.transform.position = new Vector3(0, -1, 0);
+        playButton.transform.position = new Vector3(6, 1, 0);
+        menuButton.transform.position = new Vector3(6, -1, 0);
         Overlay.transform.position = new Vector3(0, 0, 0);
 
         if (Mouse.GetComponent<SpriteRenderer>().bounds.Intersects(playButton.GetComponent<SpriteRenderer>().bounds))
@@ -102,14 +104,19 @@ public class GameManager : MonoBehaviour
             playButton.GetComponent<SpriteRenderer>().color = new Vector4(0.7f, 0.9f, 0.9f, 1);
             if (Input.GetKeyUp(KeyCode.Mouse0)) currentState = "Reset";
         }
-        else playButton.GetComponent<SpriteRenderer>().color = new Vector4(0.94f, 0.94f, 0.94f, 1);
+        else playButton.GetComponent<SpriteRenderer>().color = new Vector4(0.14f, 0.14f, 0.14f, 1);
 
         if (Mouse.GetComponent<SpriteRenderer>().bounds.Intersects(menuButton.GetComponent<SpriteRenderer>().bounds))
         {
             menuButton.GetComponent<SpriteRenderer>().color = new Vector4(0.7f, 0.9f, 0.9f, 1);
             if (Input.GetKeyUp(KeyCode.Mouse0)) SceneManager.LoadScene("Menu");
         }
-        else menuButton.GetComponent<SpriteRenderer>().color = new Vector4(0.94f, 0.94f, 0.94f, 1);
+        else menuButton.GetComponent<SpriteRenderer>().color = new Vector4(0.14f, 0.14f, 0.14f, 1);
+
+        if (STATS.DIFFICULTY == "Easy" && collected >= 12) statusText.text = "YOU\nWIN";
+        else if (STATS.DIFFICULTY == "Normal" && collected >= 15) statusText.text = "YOU\nWIN";
+        else if (STATS.DIFFICULTY == "Hard" && collected >= 16) statusText.text = "YOU\nWIN";
+        else statusText.text = "YOU\nLOSE";
     }
 
     void Spawn()
@@ -137,7 +144,6 @@ public class GameManager : MonoBehaviour
             if (_other.GetComponent<SpriteRenderer>().bounds.Intersects(_colour.GetComponent<SpriteRenderer>().bounds))
             {
                 if (_addPoint) collected++;
-                else timeLeft--;
                 Destroy(_colour);
             }
         }
